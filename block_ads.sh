@@ -157,7 +157,7 @@ for file in "${chunked_lists[@]}"; do
 done
 
 # Ensure policy called exactly $PREFIX exists, else create it
-policy_id=$(echo "${current_policies}" | jq -r --arg PREFIX "${PREFIX}" '.result | map(select(.name == $PREFIX)) | .[0].id') || error "Failed to get policy ID"
+policy_id=$(echo "${current_policies}" | jq -r --arg PREFIX "${PREFIX}" 'if .result then .result | map(select(.name == $PREFIX)) | .[0].id else null end') || error "Failed to get policy ID"
 
 # Initialize an empty array to store conditions
 conditions=()
