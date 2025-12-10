@@ -97,7 +97,7 @@ if [[ ${current_lists_count} -gt 0 ]]; then
         -H "Content-Type: application/json") || error "Failed to get list ${list_id} contents"
 
         # Create list item values for removal
-        list_items_values=$(echo "${list_items}" | jq -r '.result | map(.value) | map(select(. != null))')
+        list_items_values=$(echo "${list_items}" | jq -r 'if .result then .result | map(.value) | map(select(. != null)) else [] end')
 
         # Create list item array for appending from first chunked list
         list_items_array=$(jq -R -s 'split("\n") | map(select(length > 0) | { "value": . })' "${chunked_lists[0]}")
